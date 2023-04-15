@@ -10,6 +10,7 @@ class DartsPlayerSerializer(serializers.Serializer):
     score = serializers.IntegerField(required=True)
     darts_thrown = serializers.IntegerField(required=True)
     T20_count = serializers.IntegerField(required=True)
+    games_played = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
             user = DartsPlayer.objects.create(**validated_data)
