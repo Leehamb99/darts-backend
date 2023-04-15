@@ -44,12 +44,14 @@ class ScoreField(serializers.Field):
 class ScoreEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = DartsPlayer
-        fields = ['score', 'darts_thrown']
+        fields = ['score', 'darts_thrown', 'games_played']
     
     def update(self, instance, validated_data):
+
         score = validated_data.pop('score', None)
         darts_thrown = validated_data.pop('darts_thrown', None)
         if score & darts_thrown is not None:
             instance.score += score
             instance.darts_thrown += darts_thrown
+            instance.games_played += 1
         return super().update(instance, validated_data)
