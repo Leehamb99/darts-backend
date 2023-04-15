@@ -41,16 +41,8 @@ class ScoreEditView(UpdateAPIView):
     def get_object(self):
         return self.request.user
 
-
-
-
 class UserTokenView(TokenObtainPairView):
     serializer = UserTokenSerializer
-    
-        
-
-    
-    
 
 
 class ListUsers(APIView):
