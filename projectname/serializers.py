@@ -11,6 +11,7 @@ class DartsPlayerSerializer(serializers.Serializer):
     darts_thrown = serializers.IntegerField(required=True)
     T20_count = serializers.IntegerField(required=True)
     games_played = serializers.IntegerField(required=False)
+    darts_won = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
             user = DartsPlayer.objects.create(**validated_data)
@@ -45,14 +46,16 @@ class ScoreField(serializers.Field):
 class ScoreEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = DartsPlayer
-        fields = ['score', 'darts_thrown', 'games_played']
+        fields = ['score', 'darts_thrown', 'games_played', 'games_won']
     
     def update(self, instance, validated_data):
-
+        games_won = validated_data.pop('games_won', None)
         score = validated_data.pop('score', None)
         darts_thrown = validated_data.pop('darts_thrown', None)
         if score & darts_thrown is not None:
             instance.score += score
             instance.darts_thrown += darts_thrown
             instance.games_played += 1
+            if games_won is not None:
+                instance.games_won += 1
         return super().update(instance, validated_data)

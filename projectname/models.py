@@ -37,6 +37,7 @@ class DartsPlayer(AbstractBaseUser):
     darts_thrown = models.IntegerField(default=0)
     T20_count = models.IntegerField(default=0)
     games_played = models.IntegerField(default=0)
+    darts_won = models.IntegerField(default=0)
 
     @property
     def dart_average(self):
