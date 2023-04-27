@@ -38,6 +38,20 @@ class DartsPlayer(AbstractBaseUser):
     T20_count = models.IntegerField(default=0)
     games_played = models.IntegerField(default=0)
     games_won = models.IntegerField(default=0)
+    related_players = models.ManyToManyField('self', blank=True)
+
+    def get_all_related_players(self):
+        """
+        Returns a queryset of all the related players of this DartsPlayer object,
+        including indirect relations.
+        """
+        related_players = set()
+        stack = [self]
+        while stack:
+            current_player = stack.pop()
+            related_players.add(current_player)
+        return DartsPlayer.objects.filter(id__in=[player.id for player in related_players])
+
 
     @property
     def dart_average(self):
@@ -45,3 +59,4 @@ class DartsPlayer(AbstractBaseUser):
 
 
     USERNAME_FIELD = 'username'
+

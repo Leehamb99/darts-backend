@@ -3,15 +3,10 @@ from .models import DartsPlayer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
-class DartsPlayerSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(required=True)
-    score = serializers.IntegerField(required=True)
-    darts_thrown = serializers.IntegerField(required=True)
-    T20_count = serializers.IntegerField(required=True)
-    games_played = serializers.IntegerField(required=False)
-    games_won = serializers.IntegerField(required=False)
+class DartsPlayerSerializer(serializers.ModelSerializer):
+    class Meta:
+            model = DartsPlayer
+            fields = ['id', 'username', 'password', 'score', 'darts_thrown', 'T20_count', 'games_played', 'games_won', 'related_players']
 
     def create(self, validated_data):
             user = DartsPlayer.objects.create(**validated_data)
@@ -29,7 +24,6 @@ class UserTokenSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-
         return (token)
 
 class ScoreField(serializers.Field):
@@ -59,3 +53,5 @@ class ScoreEditSerializer(serializers.ModelSerializer):
             if games_won is not None:
                 instance.games_won += 1
         return super().update(instance, validated_data)
+
+
