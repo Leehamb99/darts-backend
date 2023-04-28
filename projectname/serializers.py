@@ -40,6 +40,7 @@ class ScoreField(serializers.Field):
 class ScoreEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = DartsPlayer
+        id = serializers.ReadOnlyField()
         fields = ['score', 'darts_thrown', 'games_played', 'games_won']
     
     def update(self, instance, validated_data):

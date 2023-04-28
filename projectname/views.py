@@ -46,11 +46,17 @@ class UserViewSet(RetrieveAPIView):
         }
         return Response(data, status=status.HTTP_200_OK)
 
-class ScoreEditView(UpdateAPIView):
-    serializer_class = ScoreEditSerializer
-    
-    def get_object(self):
-        return self.request.user
+
+class ScoreEditView(APIView):
+    def patch(self, request):
+        data = request.data
+        for obj in data:
+            id = obj['id']
+            player = DartsPlayer.objects.get(id=id)
+            serializer = DartsPlayerSerializer(player, data=obj, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+        return Response(status=200)
 
 class UserTokenView(TokenObtainPairView):
     serializer = UserTokenSerializer
