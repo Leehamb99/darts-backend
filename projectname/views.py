@@ -53,7 +53,7 @@ class ScoreEditView(APIView):
         for obj in data:
             id = obj['id']
             player = DartsPlayer.objects.get(id=id)
-            serializer = DartsPlayerSerializer(player, data=obj, partial=True)
+            serializer = ScoreEditSerializer(player, data=obj, partial=True)
             if serializer.is_valid():
                 serializer.save()
         return Response(status=200)
