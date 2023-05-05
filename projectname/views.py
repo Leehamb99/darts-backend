@@ -47,6 +47,8 @@ class UserViewSet(RetrieveAPIView):
         return Response(data, status=status.HTTP_200_OK)
 
 
+
+
 class ScoreEditView(APIView):
     def patch(self, request):
         data = request.data
@@ -61,6 +63,16 @@ class ScoreEditView(APIView):
 class UserTokenView(TokenObtainPairView):
     serializer = UserTokenSerializer
 
+
+class UserRemoveView(APIView):
+    def delete(self, request):
+        main_id = request.data.get("main")
+        friend_id = request.data.get("friend")
+        player = DartsPlayer.objects.get(id=main_id)
+        player.related_players.remove(friend_id)
+        player.save()
+        return Response({'message': "Done"})
+    
 
 class ListUsers(APIView):
 
